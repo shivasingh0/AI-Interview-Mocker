@@ -1,6 +1,7 @@
 import { UserButton } from '@clerk/nextjs'
 import React from 'react'
 import AddNewInterview from './_components/AddNewInterview'
+import InterviewList from './_components/InterviewList'
 
 const Dashboard = () => {
   return (
@@ -12,6 +13,8 @@ const Dashboard = () => {
       <AddNewInterview/>
     </div>
 
+     {/* Privious interview list */}
+     <InterviewList/>
     </div>
   )
 }

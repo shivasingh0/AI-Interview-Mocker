@@ -35,7 +35,7 @@ const AddNewInterview = () => {
     setLoading(true);
     console.log(jobRole, jobDesc, jobExperience);
 
-    const inputPrompt = `Job Role: ${jobRole}, Job Description: ${jobDesc}, Job Experience: ${jobExperience} years. Based on that give me ${process.env.NEXT_PUBLIC_INTERVIEW_QUESTION_COUNT} interview questions. Give me all the questions in JSON formate`;
+    const inputPrompt = `Job Role: ${jobRole}, Job Description: ${jobDesc}, Job Experience: ${jobExperience} years. Based on that give me ${process.env.NEXT_PUBLIC_INTERVIEW_QUESTION_COUNT} interview questions and answers. Give me all the questions and answers in JSON formate`;
 
     const result = await chatSession.sendMessage(inputPrompt);
 

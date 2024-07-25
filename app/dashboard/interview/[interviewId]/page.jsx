@@ -14,7 +14,6 @@ const Interview = ({ params }) => {
   const [webCamEnabled, setWebCamEnabled] = useState(false);
 
   useEffect(() => {
-    console.log(params?.interviewId);
     console.log(MpckInterview);
     getInterviewDetails();
   }, []);
@@ -27,7 +26,7 @@ const Interview = ({ params }) => {
       .select()
       .from(MpckInterview)
       .where(eq(MpckInterview.mockId, params.interviewId));
-    // setInterviewData(result[0]);
+    setInterviewData(result[0]);
   };
 
   return (

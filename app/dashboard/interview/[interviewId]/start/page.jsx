@@ -5,6 +5,8 @@ import { eq } from "drizzle-orm";
 import React, { useEffect, useState } from "react";
 import QuestionSection from "./_components/QuestionSection";
 import RecordAnswerSection from "./_components/RecordAnswerSection";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const StartInterview = ({ params }) => {
   const [interviewData, setInterviewData] = useState();
@@ -13,6 +15,7 @@ const StartInterview = ({ params }) => {
 
   useEffect(() => {
     getInterviewDetails();
+    console.log(interviewData);
   }, []);
 
   /**
@@ -30,6 +33,7 @@ const StartInterview = ({ params }) => {
         setMockInterviewQuestion(jsonMockResp);
         console.log(jsonMockResp);
         setInterviewData(result[0]);
+        console.log("result", result);
       } else {
         console.error("No interview data found");
       }
@@ -38,17 +42,43 @@ const StartInterview = ({ params }) => {
     }
   };
 
+  console.log("interviewData", interviewData);
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2">
-      {/* Question section */}
-      <div>
-        <QuestionSection
-          activeIndex={activeIndex}
+    <div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+        {/* Question section */}
+        <div>
+          <QuestionSection
+            activeIndex={activeIndex}
+            mockInterviewQuestion={mockInterviewQuestion}
+          />
+        </div>
+        {/* video section */}
+        <RecordAnswerSection
           mockInterviewQuestion={mockInterviewQuestion}
+          activeIndex={activeIndex}
+          interviewData={interviewData}
         />
       </div>
-      {/* video section */}
-      <RecordAnswerSection/>
+      <div className="flex justify-end gap-6">
+        {activeIndex > 0 && (
+          <Button onClick={() => setActiveIndex(activeIndex - 1)}>
+            Previous Question
+          </Button>
+        )}
+
+        {activeIndex != mockInterviewQuestion?.length - 1 && (
+          <Button onClick={() => setActiveIndex(activeIndex + 1)}>
+            Next Question
+          </Button>
+        )}
+        {activeIndex == mockInterviewQuestion?.length - 1 && (
+          <Link href={`/dashboard/interview/${interviewData?.mockId}/feedback`}>
+            <Button>End Interview</Button>
+          </Link>
+        )}
+      </div>
     </div>
   );
 };

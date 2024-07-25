@@ -1,5 +1,6 @@
 import React from 'react'
 import Header from './_components/Header'
+import { Toaster } from 'sonner'
 
 const DashboardLayout = ({children}) => {
   return (
@@ -7,6 +8,7 @@ const DashboardLayout = ({children}) => {
       <Header/>
       <div className='mx-5 md:mx-20 lg:mx-36'>
       {children}
+      <Toaster />
       </div>
     </div>
   )
