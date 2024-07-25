@@ -17,7 +17,7 @@ const QuestionSection = ({ mockInterviewQuestion, activeIndex }) => {
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
           {mockInterviewQuestion &&
             mockInterviewQuestion.map((question, index) => (
-              <h2
+              <h2 key={index}
                 className={`px-1 py-2 rounded-full text-xs md:text-sm text-center cursor-pointer ${
                   activeIndex === index
                     ? "bg-[#4845D2] text-white"
