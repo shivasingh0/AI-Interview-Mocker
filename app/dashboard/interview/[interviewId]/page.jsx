@@ -31,7 +31,7 @@ const Interview = ({ params }) => {
 
   return (
     <div className="my-10 flex justify-center flex-col items-center">
-      <h2 className="font-bold text-2xl">Let's get started</h2>
+      <h2 className="font-bold text-2xl">Let&apos;s get started</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
         <div className="flex flex-col my-5 gap-5">
           <div className="border p-5 rounded-lg flex flex-col gap-5">
