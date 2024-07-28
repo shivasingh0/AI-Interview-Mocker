@@ -5,11 +5,13 @@ import { db } from "@/utils/db";
 import { MpckInterview } from "@/utils/schema";
 import { eq } from "drizzle-orm";
 import { Lightbulb, Sparkles, WebcamIcon } from "lucide-react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import Webcam from "react-webcam";
+import { toast } from "sonner";
 
 const Interview = ({ params }) => {
+  const router = useRouter();
   const [interviewData, setInterviewData] = useState();
   const [webCamEnabled, setWebCamEnabled] = useState(false);
 
@@ -29,11 +31,19 @@ const Interview = ({ params }) => {
     setInterviewData(result[0]);
   };
 
+  const handleStartInterview = () => {
+    if (webCamEnabled) {
+      router.push(`/dashboard/interview/${params.interviewId}/start`);
+    } else {
+      toast("Webcam not enabled");
+    }
+  };
+
   return (
-    <div className="my-10 flex justify-center flex-col items-center">
+    <div className="my-10 px-[100px] flex justify-center flex-col items-center">
       <h2 className="font-bold text-2xl">Let&apos;s get started</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-        <div className="flex flex-col my-5 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 justify-end gap-10 my-7">
+        <div className="flex flex-col gap-10">
           <div className="border p-5 rounded-lg flex flex-col gap-5">
             <h2 className="text-xl">
               <strong>Job Role / Job Position</strong> :{" "}
@@ -58,12 +68,12 @@ const Interview = ({ params }) => {
           </div>
         </div>
         <div>
-          <div className="bg-secondary border rounded-lg p-20 my-7">
+          <div className="bg-secondary border rounded-lg flex justify-center p-10">
             {webCamEnabled ? (
               <Webcam
                 onUserMedia={() => setWebCamEnabled(true)}
                 onUserMediaError={() => setWebCamEnabled(false)}
-                style={{ height: 300, width: 300 }}
+                style={{ height: 300}}
                 mirrored={true}
               />
             ) : (
@@ -73,18 +83,23 @@ const Interview = ({ params }) => {
             )}
           </div>
           {webCamEnabled ? (
-            ""
+            <div className="flex justify-center my-10">
+             <Button onClick={handleStartInterview}>
+             Start Interview <Sparkles className="ms-2" />
+           </Button>
+           </div>
           ) : (
-            <div className="flex justify-center">
-              <Button variant='ghost' onClick={() => setWebCamEnabled(true)} className="my-2 border">
-              Enable Web Cam and Microphone
-            </Button>
+            <div className="flex justify-center my-10">
+              <Button
+                variant="ghost"
+                onClick={() => setWebCamEnabled(true)}
+                className="my-2 border"
+              >
+                Enable Web Cam and Microphone
+              </Button>
             </div>
           )}
         </div>
-      </div>
-      <div className="w-full flex justify-end">
-        <Link href={`/dashboard/interview/${params.interviewId}/start`}><Button>Start Interview <Sparkles className="ms-2" /></Button></Link>
       </div>
     </div>
   );
