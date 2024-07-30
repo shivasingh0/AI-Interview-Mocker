@@ -16,7 +16,7 @@ const Interview = ({ params }) => {
   const [webCamEnabled, setWebCamEnabled] = useState(false);
 
   useEffect(() => {
-    console.log(MpckInterview);
+    // console.log(MpckInterview);
     getInterviewDetails();
   }, []);
 

@@ -5,12 +5,13 @@ import { db } from "@/utils/db";
 import { chatSession } from "@/utils/GeminiAiModal";
 import { UserAnswer } from "@/utils/schema";
 import { useUser } from "@clerk/nextjs";
-import { Mic, StopCircle, Webcam } from "lucide-react";
+import { Mic, StopCircle, WebcamIcon } from "lucide-react";
 import moment from "moment";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import useSpeechToText from "react-hook-speech-to-text";
 import { toast } from "sonner";
+import Webcam from "react-webcam";
 
 const RecordAnswerSection = ({
   mockInterviewQuestion,
