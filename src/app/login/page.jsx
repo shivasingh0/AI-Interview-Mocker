@@ -1,10 +1,23 @@
-import { SignIn } from "@clerk/nextjs";
+"use client";
 
-export default function Page() {
+import { Undo2 } from "lucide-react";
+import React from "react";
+import { useRouter } from "next/navigation";
+import { Input } from "@/src/components/ui/input";
+import { Button } from "@/src/components/ui/button";
+
+const Login = () => {
+  const router = useRouter();
   return (
     <section className="bg-white">
       <div className="lg:grid lg:min-h-screen lg:grid-cols-12">
         <section className="relative flex h-32 items-end bg-gray-900 lg:col-span-5 lg:h-full xl:col-span-6">
+          <button
+            onClick={() => router.back()}
+            className="bg-white hover:scale-105 transition-all absolute top-10 left-10 z-50 text-black p-2 rounded-lg"
+          >
+            <Undo2 />
+          </button>
           <img
             alt=""
             src="https://images.unsplash.com/photo-1617195737496-bc30194e3a19?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
@@ -68,11 +81,116 @@ export default function Page() {
                 Eligendi nam dolorum aliquam, quibusdam aperiam voluptatum.
               </p>
             </div>
+            <h1 className="font-bold text-xl text-center">Please Login</h1>
+            <form className="mt-8 grid grid-cols-6 gap-6">
+           
+              {/* <div className="col-span-6 sm:col-span-3">
+                <label
+                  htmlFor="FullName"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  Full Name
+                </label>
 
-            <SignIn />
+                <Input />
+              </div>
+
+              <div className="col-span-6 sm:col-span-3">
+                <label
+                  htmlFor="LastName"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  Mobile No.
+                </label>
+
+                <Input />
+              </div> */}
+
+              <div className="col-span-6">
+                <label
+                  htmlFor="Email"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  {" "}
+                  Email{" "}
+                </label>
+
+                <Input />
+              </div>
+
+              <div className="col-span-6 sm:col-span-3">
+                <label
+                  htmlFor="Password"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  {" "}
+                  Password{" "}
+                </label>
+
+                <Input />
+              </div>
+
+              <div className="col-span-6 sm:col-span-3">
+                <label
+                  htmlFor="PasswordConfirmation"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  Password Confirmation
+                </label>
+
+                <Input />
+              </div>
+
+              <div className="col-span-6">
+                <label htmlFor="MarketingAccept" className="flex gap-4">
+                  <input
+                    type="checkbox"
+                    id="MarketingAccept"
+                    name="marketing_accept"
+                    className="size-5 rounded-md border-gray-200 bg-white shadow-sm"
+                  />
+
+                  <span className="text-sm text-gray-700">
+                    I want to receive emails about events, product updates and
+                    company announcements.
+                  </span>
+                </label>
+              </div>
+
+              <div className="col-span-6">
+                <p className="text-sm text-gray-500">
+                  By creating an account, you agree to our
+                  <a href="#" className="text-gray-700 underline">
+                    {" "}
+                    terms and conditions{" "}
+                  </a>
+                  and{" "}
+                  <a href="#" className="text-gray-700 underline">
+                    privacy policy
+                  </a>
+                  .
+                </p>
+              </div>
+
+              <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
+                <Button>
+                  Login
+                </Button>
+
+                <p className="mt-4 text-sm text-gray-500 sm:mt-0">
+                  Don't have an account?{" "}
+                  <a href="#" className="text-gray-700 underline">
+                    Sign up
+                  </a>
+                  .
+                </p>
+              </div>
+            </form>
           </div>
         </main>
       </div>
     </section>
   );
-}
+};
+
+export default Login;

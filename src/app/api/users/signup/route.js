@@ -10,7 +10,7 @@ export async function POST(req) {
 
     try {
         const reqBody = await req.json();
-        const { userName, email, password } = reqBody;
+        const { userName, email, password, number } = reqBody;
         // console.log(reqBody);
 
         const user = await User.findOne({ email });
@@ -23,7 +23,8 @@ export async function POST(req) {
         const newUser = new User({
             userName,
             email,
-            password: hashedPassword
+            password: hashedPassword,
+            number
         });
         const savedUser = await newUser.save();
         // console.log(savedUser);
