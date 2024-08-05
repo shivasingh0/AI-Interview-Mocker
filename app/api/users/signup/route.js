@@ -2,19 +2,20 @@ import { connectToDb } from "@/dbConnection/mongoDb";
 import { sendMail } from "@/helpers/mailer";
 import User from "@/models/userModel";
 import bcryptjs from "bcryptjs";
-
+import { NextResponse } from "next/server";
 
 connectToDb();
 
-export default async function POST(req, res) {
+export async function POST(req) {
+
     try {
         const reqBody = await req.json();
         const { userName, email, password } = reqBody;
+        // console.log(reqBody);
+
         const user = await User.findOne({ email });
         if (user) {
-            return res
-                .status(400)
-                .json({ error: "User already exists" });
+            return NextResponse.json({ error: "User already exists" }, { status: 401 });
         }
 
         const salt = bcryptjs.genSaltSync(10);
@@ -25,12 +26,13 @@ export default async function POST(req, res) {
             password: hashedPassword
         });
         const savedUser = await newUser.save();
-        console.log(savedUser);
+        // console.log(savedUser);
 
         await sendMail({ email, emailType: "VERIFY", userId: savedUser._id });
-        return res.status(201).json({ message: "User created successfully" });
+        return NextResponse.json({ message: "User created successfully", user: savedUser }, { status: 201 });
 
     } catch (error) {
         console.error(error);
+        return NextResponse.json({ error: error.message }, {status: 500});
     }
 }
