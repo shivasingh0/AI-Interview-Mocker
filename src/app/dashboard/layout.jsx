@@ -1,6 +1,5 @@
 import React from 'react'
 import Header from './_components/Header'
-import { Toaster } from 'sonner'
 
 const DashboardLayout = ({children}) => {
   return (
@@ -8,7 +7,6 @@ const DashboardLayout = ({children}) => {
       <Header/>
       <div>
       {children}
-      <Toaster />
       </div>
     </div>
   )

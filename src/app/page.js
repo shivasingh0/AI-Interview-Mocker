@@ -7,11 +7,7 @@ export default function Home() {
   return (
     <DashboardLayout>
 
-      <Image src={'/grid.svg'} className="absolute z-[-10] w-full transparent overflow-x-hidden bg-cover" loading="lazy"
-        width={1200}
-        height={300} alt={'img'} />
-
-      <section className="z-50">
+      <section style={{ backgroundImage: "url('/grid.svg')" }} className="z-50 bg-cover">
         <div className="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-12">
           <a
             href="https://shivmangal.netlify.app/"
