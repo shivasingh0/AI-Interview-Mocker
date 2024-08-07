@@ -35,6 +35,7 @@ const Signup = () => {
         success: (response) => {
           if (response?.data?.status) {
             setIsDialogOpen(true);
+            reset();
             return "Signup successful! Verification link sent.";
           }
           return "Signup successful.";
@@ -46,7 +47,6 @@ const Signup = () => {
           return "An error occurred. Please try again.";
         },
       });
-      reset();
     } catch (error) {
       // You should not need this block if `toast.promise` handles errors
       // But keeping it here in case you need more specific error handling

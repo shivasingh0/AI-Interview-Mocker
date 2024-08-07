@@ -22,7 +22,7 @@ export async function POST(req) {
       return NextResponse.json({ error: "Invalid password" }, { status: 401 });
     }
     if (user.isVarified === false) {
-        return NextResponse.json({ error: "User not verified" }, { status: 402 });
+      return NextResponse.json({ error: "User not verified" }, { status: 402 });
     }
     const tokenData = {
       id: user._id,

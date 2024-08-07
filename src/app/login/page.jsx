@@ -22,24 +22,28 @@ const Login = () => {
     }
 
     try {
-      // Use toast.promise for the entire API call
-      const response = await toast.promise(axios.post("/api/users/login", data), {
-        loading: "Logging in...",
-        success: "Login successful!",
-        error: (error) => {
-          if (error?.response?.status === 401) {
-            return "Invalid credentials. Please try again.";
-          }
-          return "An error occurred. Please try again.";
-        },
-      });
-      reset();
-      // Log response for debugging
-    console.log("Login response:", response)
-      // Redirect to a different page after successful login
+      const response = await toast.promise(
+        axios.post("/api/users/login", data),
+        {
+          loading: "Logging in...",
+          success: (response) => {
+            if (response?.data?.status) {
+              router.push("/dashboard");
+              return "Login successful!";
+            }
+          },
+          // navigate,
+          error: (error) => {
+            if (error?.response?.status === 401) {
+              return "Invalid credentials. Please try again.";
+            }
+            return "An error occurred. Please try again.";
+          },
+        }
+      );
+
+      // router.push("/dashboard");
     } catch (error) {
-      // You should not need this block if `toast.promise` handles errors
-      // But keeping it here in case you need more specific error handling
       toast.error("An unexpected error occurred. Please try again.");
     }
   };
