@@ -3,6 +3,7 @@
 import { Button } from "@/src/components/ui/button";
 import { db } from "@/src/utils/db";
 import { MpckInterview } from "@/src/utils/schema";
+import axios from "axios";
 import { eq } from "drizzle-orm";
 import { Lightbulb, Sparkles, WebcamIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -11,6 +12,10 @@ import Webcam from "react-webcam";
 import { toast } from "sonner";
 
 const Interview = ({ params }) => {
+  // console.log(params.interviewId);
+
+  const id = params.interviewId;
+
   const router = useRouter();
   const [interviewData, setInterviewData] = useState();
   const [webCamEnabled, setWebCamEnabled] = useState(false);
@@ -24,11 +29,9 @@ const Interview = ({ params }) => {
    * Used to get interviewData by mockId
    */
   const getInterviewDetails = async () => {
-    const result = await db
-      .select()
-      .from(MpckInterview)
-      .where(eq(MpckInterview.mockId, params.interviewId));
-    setInterviewData(result[0]);
+    const result = await axios.get(`/api/mockinterview/${id}`);
+    // console.log(result);
+    setInterviewData(result.data);
   };
 
   const handleStartInterview = () => {
@@ -45,14 +48,14 @@ const Interview = ({ params }) => {
       <div className="grid grid-cols-1 md:grid-cols-2 justify-end gap-10 my-7">
         <div className="flex flex-col gap-10">
           <div className="border p-5 rounded-lg flex flex-col gap-5">
-            <h2 className="text-xl">
+            <h2 className="text-xl capitalize">
               <strong>Job Role / Job Position</strong> :{" "}
               {interviewData?.jobPosition}
             </h2>
-            <h2 className="text-xl">
+            <h2 className="text-xl capitalize">
               <strong>Job Description</strong> : {interviewData?.jobDesc}
             </h2>
-            <h2 className="text-xl">
+            <h2 className="text-xl capitalize">
               <strong>Years of Experience</strong> :{" "}
               {interviewData?.jobExperience}
             </h2>
@@ -73,7 +76,7 @@ const Interview = ({ params }) => {
               <Webcam
                 onUserMedia={() => setWebCamEnabled(true)}
                 onUserMediaError={() => setWebCamEnabled(false)}
-                style={{ height: 300}}
+                style={{ height: 300 }}
                 mirrored={true}
               />
             ) : (
@@ -84,10 +87,10 @@ const Interview = ({ params }) => {
           </div>
           {webCamEnabled ? (
             <div className="flex justify-center my-10">
-             <Button onClick={handleStartInterview}>
-             Start Interview <Sparkles className="ms-2" />
-           </Button>
-           </div>
+              <Button onClick={handleStartInterview}>
+                Start Interview <Sparkles className="ms-2" />
+              </Button>
+            </div>
           ) : (
             <div className="flex justify-center my-10">
               <Button

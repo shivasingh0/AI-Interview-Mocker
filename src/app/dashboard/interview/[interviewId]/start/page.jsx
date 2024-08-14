@@ -7,15 +7,19 @@ import QuestionSection from "./_components/QuestionSection";
 import RecordAnswerSection from "./_components/RecordAnswerSection";
 import { Button } from "@/src/components/ui/button";
 import Link from "next/link";
+import axios from "axios";
 
 const StartInterview = ({ params }) => {
+
+  const id = params.interviewId;
+
   const [interviewData, setInterviewData] = useState();
   const [mockInterviewQuestion, setMockInterviewQuestion] = useState();
   const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
     getInterviewDetails();
-    console.log(interviewData);
+    // console.log(interviewData);
   }, []);
 
   /**
@@ -23,16 +27,22 @@ const StartInterview = ({ params }) => {
    */
   const getInterviewDetails = async () => {
     try {
-      const result = await db
-        .select()
-        .from(MpckInterview)
-        .where(eq(MpckInterview.mockId, params.interviewId));
+      // const result = await db
+      //   .select()
+      //   .from(MpckInterview)
+      //   .where(eq(MpckInterview.mockId, params.interviewId));
 
-      if (result.length > 0) {
-        const jsonMockResp = JSON.parse(result[0].jsonMockResp);
+      const result = await axios.get(`/api/mockinterview/${id}`)
+
+      console.log(result);
+      
+      if (result.data) {
+        const jsonMockResp = result.data.jsonMockResp;
         setMockInterviewQuestion(jsonMockResp);
         console.log(jsonMockResp);
-        setInterviewData(result[0]);
+        const data = result.data
+        console.log(data);
+        setInterviewData(data);
         console.log("result", result);
       } else {
         console.error("No interview data found");
@@ -42,7 +52,7 @@ const StartInterview = ({ params }) => {
     }
   };
 
-  console.log("interviewData", interviewData);
+  // console.log("interviewData", interviewData);
 
   return (
     <div>

@@ -41,8 +41,6 @@ const Login = () => {
           },
         }
       );
-
-      // router.push("/dashboard");
     } catch (error) {
       toast.error("An unexpected error occurred. Please try again.");
     }

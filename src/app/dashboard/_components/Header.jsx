@@ -1,14 +1,18 @@
 "use client";
 import { Button } from "@/src/components/ui/button";
 import axios from "axios";
+import Cookies from "js-cookie";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 const Header = () => {
   const pathName = usePathname();
   const router = useRouter();
+  const [token, setToken] = useState(null);
+  
 
   const handleLogout = async () => {
     //fetch logout api
@@ -61,8 +65,7 @@ const Header = () => {
           How it works
         </li>
       </ul>
-      {/* <UserButton/> */}
-      <Button onClick={handleLogout} className="bg-red-500 hover:bg-red-400">
+        <Button onClick={handleLogout} className="bg-red-500 hover:bg-red-400">
         Logout
       </Button>
     </div>

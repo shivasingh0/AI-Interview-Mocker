@@ -19,6 +19,7 @@ import { v4 as uuidv4 } from "uuid";
 import { useUser } from "@clerk/nextjs";
 import moment from "moment/moment";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 
 const AddNewInterview = () => {
   const [openDialog, setOpenDialog] = useState(false);
@@ -28,48 +29,44 @@ const AddNewInterview = () => {
   const [loading, setLoading] = useState(false);
   const [aiResponse, setAiResponse] = useState([]);
   const { user } = useUser();
-  const router = useRouter()
+  const router = useRouter();
 
   const onSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    console.log(jobRole, jobDesc, jobExperience);
 
     const inputPrompt = `Job Role: ${jobRole}, Job Description: ${jobDesc}, Job Experience: ${jobExperience} years. Based on that give me ${process.env.NEXT_PUBLIC_INTERVIEW_QUESTION_COUNT} interview questions and answers. Give me all the questions and answers in JSON formate`;
+    try {
+      const result = await chatSession.sendMessage(inputPrompt);
+      console.log(result.response);
 
-    const result = await chatSession.sendMessage(inputPrompt);
+      const mockJsonResp = result.response
+        .text()
+        .replace("```json", "")
+        .replace("```", "");
 
-    const mockJsonResp = result.response
-      .text()
-      .replace("```json", "")
-      .replace("```", "");
+      console.log("mockJsonResp", mockJsonResp);
 
-    console.log(JSON.parse(mockJsonResp));
+      // Parse JSON response to array
+      const parsedMockJsonResp = JSON.parse(mockJsonResp);
 
-    setAiResponse(mockJsonResp);
+      setAiResponse(parsedMockJsonResp);
 
-    if (mockJsonResp) {
-      const resp = await db
-        .insert(MpckInterview)
-        .values({
-          mockId: uuidv4(),
-          jsonMockResp: mockJsonResp,
-          jobDesc: jobDesc,
-          jobPosition: jobRole,
-          jobExperience: jobExperience,
-          createdBy: user?.primaryEmailAddress?.emailAddress,
-          createdAt: moment().format("DD-MM-yyyy"),
-        })
-        .returning({ mockId: MpckInterview.mockId });
+      const response = await axios.post("/api/mockinterview", {
+        jsonMockResp: parsedMockJsonResp, // Send as an array
+        jobPosition: jobRole,
+        jobDesc: jobDesc,
+        jobExperience: jobExperience,
+        // createdBy: user?.primaryEmailAddress?.emailAddress,
+        createdAt: moment().format("DD-MM-yyyy"),
+      });
 
-      console.log("inserted ID", resp);
-      if (resp) {
+      if (response.data.success) {
         setOpenDialog(false);
-        router.push(`/dashboard/interview/${resp[0].mockId}`)
-        
+        router.push(`/dashboard/interview/${response.data.mockId}`);
       }
-    } else {
-      console.log("ERROR");
+    } catch (error) {
+      console.error("Failed to parse JSON:", error);
     }
 
     setLoading(false);
@@ -83,7 +80,7 @@ const AddNewInterview = () => {
       >
         <h2 className="font-bold text-lg text-center">+ Add New</h2>
       </div>
-      <Dialog open={openDialog}>
+      <Dialog open={openDialog} onOpenChange={() => setOpenDialog(false)}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
             <DialogTitle>Tell us more about your job Interview</DialogTitle>
@@ -131,12 +128,6 @@ const AddNewInterview = () => {
                   </div>
                 </div>
                 <div className="flex gap-5 justify-end mt-5">
-                  <Button
-                    variant="secondary"
-                    onClick={() => setOpenDialog(false)}
-                  >
-                    Cancle
-                  </Button>
                   <Button type="submit" disabled={loading} varient="primary">
                     {loading ? (
                       <>

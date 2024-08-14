@@ -8,7 +8,7 @@ const MockInterviewSchema = mongoose.Schema({
         default: uuidv4
     },
     jsonMockResp: {
-        type: String,
+        type: [{ question: String, answer: String }],
         required: [true, "Json Mock Response is required"],
     },
     jobPosition: {
@@ -20,7 +20,7 @@ const MockInterviewSchema = mongoose.Schema({
         required: [true, "Job Description is required"],
     },
     jobExperience: {
-        type: String,
+        type: Number,
         required: [true, "Job Experience is required"],
     },
     createdBy: {
